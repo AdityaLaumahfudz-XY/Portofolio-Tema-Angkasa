@@ -1,0 +1,976 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portofolio Aditya Laumahfudz Isabel</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #4cc9f0;      /* Cyan biru listrik */
+            --secondary-color: #4361ee;     /* Biru dalam */
+            --accent-color: #f72585;        /* Pink neon (kontras kosmik) */
+            --text-color: #e6f7ff;
+            --light-color: #1a1f2d;
+            --dark-color: #0b0c10;
+            --bg-color: #0c0e16;
+            --card-bg: rgba(18, 22, 33, 0.7);
+            --glow: 0 0 10px rgba(76, 201, 240, 0.5);
+            --transition: all 0.4s ease;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);   
+            line-height: 1.6;
+            overflow-x: hidden;  
+            position: relative;
+            height: 100vh;
+            overflow: auto;
+        }
+
+        /* Latar belakang kosmik */
+        #spaceCanvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -2;
+            pointer-events: none; /* Agar tidak mengganggu interaksi halaman */
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background-color: var(--card-bg);
+            backdrop-filter: blur(10px);
+            border-radius: 12px;
+            overflow: hidden;
+            margin-top: 20px;
+            margin-bottom: 20px;
+            border: 1px solid rgba(76, 201, 240, 0.15);
+            box-shadow: var(--glow);
+            position: relative;
+            z-index: 10;
+        }
+
+        header {
+            background: linear-gradient(135deg, var(--secondary-color), #3a0ca3, #4361ee);
+            color: white;
+            text-align: center;
+            padding: 70px 20px 50px;
+            position: relative;
+            animation: fadeInDown 1s ease-out;
+            box-shadow: inset 0 -20px 30px rgba(0,0,0,0.3);
+        }
+
+        .profile-img {
+            width: 160px;
+            height: 160px;
+            border-radius: 50%;
+            border: 3px solid var(--primary-color);
+            object-fit: cover;
+            margin-bottom: 20px;
+            box-shadow: 0 0 20px rgba(76, 201, 240, 0.6);
+            animation: float 4s ease-in-out infinite;
+        }
+
+        h1 {
+            font-size: 2.8rem;
+            margin-bottom: 8px;
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+            letter-spacing: 1px;
+        }
+
+        .tagline {
+            font-size: 1.4rem;
+            font-weight: 300;
+            margin-bottom: 15px;
+            opacity: 0.9;
+        }
+
+        .school {
+            font-size: 1.2rem;
+            margin-bottom: 25px;
+            color: #a9d6e5;
+        }
+
+        .social-links {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+            gap: 18px;
+        }
+
+        .social-icon {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: rgba(10, 15, 30, 0.7);
+            color: var(--primary-color);
+            font-size: 1.4rem;
+            transition: var(--transition);
+            text-decoration: none;
+            box-shadow: 0 0 12px rgba(0,0,0,0.5);
+            border: 1px solid rgba(76, 201, 240, 0.3);
+        }
+
+        .social-icon:hover {
+            transform: translateY(-6px) scale(1.1);
+            box-shadow: 0 0 20px rgba(76, 201, 240, 0.8);
+            background: rgba(20, 30, 60, 0.9);
+            color: white;
+        }
+
+        .main-content {
+            display: flex;
+            flex-wrap: wrap;
+            padding: 30px;
+        }
+
+        .left-column {
+            flex: 1;
+            min-width: 300px;
+            padding-right: 30px;
+        }
+
+        .right-column {
+            flex: 2;
+            min-width: 300px;
+        }
+
+        .section {
+            margin-bottom: 35px;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.7s ease, transform 0.7s ease;
+        }
+
+        .section.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .section-title {
+            font-size: 1.7rem;
+            color: var(--primary-color);
+            border-bottom: 2px solid var(--accent-color);
+            padding-bottom: 8px;
+            margin-bottom: 18px;
+            text-shadow: 0 0 8px rgba(247, 37, 133, 0.4);
+        }
+
+        .info-item {
+            margin-bottom: 14px;
+        }
+
+        .info-title {
+            font-weight: bold;
+            color: #a9d6e5;
+        }
+
+        .info-detail {
+            color: #cbd5e1;
+        }
+
+        .skills {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .skill-badge {
+            background: rgba(30, 40, 70, 0.6);
+            color: var(--primary-color);
+            padding: 7px 18px;
+            border-radius: 25px;
+            font-size: 0.95rem;
+            border: 1px solid rgba(76, 201, 240, 0.3);
+            transition: var(--transition);
+            backdrop-filter: blur(5px);
+        }
+
+        .skill-badge:hover {
+            background: rgba(76, 201, 240, 0.3);
+            color: white;
+            transform: scale(1.08);
+            box-shadow: 0 0 12px rgba(76, 201, 240, 0.5);
+        }
+
+        .education-item, .experience-item, .competition-item, .project-item {
+            margin-bottom: 24px;
+            padding: 18px;
+            border-radius: 10px;
+            background: rgba(25, 30, 50, 0.5);
+            border-left: 3px solid var(--primary-color);
+            transition: var(--transition);
+            backdrop-filter: blur(5px);
+        }
+
+        .education-item:hover,
+        .experience-item:hover,
+        .competition-item:hover,
+        .project-item:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 6px 15px rgba(0,0,0,0.3), 0 0 15px rgba(76, 201, 240, 0.2);
+            border-left: 3px solid var(--accent-color);
+        }
+
+        .edu-title, .exp-title, .comp-title, .project-title {
+            font-weight: bold;
+            font-size: 1.15rem;
+            color: white;
+        }
+
+        .edu-place, .exp-place, .comp-place {
+            color: var(--accent-color);
+            font-weight: 600;
+        }
+
+        .edu-date, .exp-date, .comp-date {
+            color: #8892b0;
+            font-size: 0.95rem;
+            margin-bottom: 6px;
+        }
+
+        .projects {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 22px;
+        }
+
+        .language-item {
+            margin-bottom: 18px;
+        }
+
+        .language-name {
+            font-weight: bold;
+            display: block;
+            margin-bottom: 6px;
+            color: #a9d6e5;
+        }
+
+        .progress-bar {
+            height: 10px;
+            background: rgba(100, 116, 139, 0.3);
+            border-radius: 5px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .progress {
+            height: 100%;
+            background: linear-gradient(to right, var(--primary-color), var(--accent-color));
+            width: 0;
+            transition: width 1.5s ease-in-out;
+            border-radius: 5px;
+        }
+
+        .progress-text {
+            font-size: 0.85rem;
+            color: #94a3b8;
+            margin-top: 5px;
+        }
+
+        footer {
+            background: rgba(11, 12, 16, 0.9);
+            color: #94a3b8;
+            text-align: center;
+            padding: 25px;
+            font-size: 0.95rem;
+            border-top: 1px solid rgba(76, 201, 240, 0.1);
+        }
+
+        @media (max-width: 768px) {
+            .main-content {
+                flex-direction: column;
+            }
+            .left-column {
+                padding-right: 0;
+                margin-bottom: 30px;
+            }
+            h1 { font-size: 2.3rem; }
+            .profile-img { width: 130px; height: 130px; }
+        }
+
+        @keyframes fadeInDown {
+            from { opacity: 0; transform: translateY(-30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-12px); }
+            100% { transform: translateY(0px); }
+        }
+
+        ul {
+            list-style: none;
+            padding-left: 0;
+        }
+        ul li::before {
+            content: "✦ ";
+            color: var(--accent-color);
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+
+<!-- Canvas untuk latar belakang kosmik -->
+<canvas id="spaceCanvas"></canvas>
+
+<div class="container">
+    <header>
+        <img src="images/FotoAditya.jpg" alt="Foto Aditya Laumahfudz Isabel" class="profile-img">
+        <!-- Jika gambar tidak muncul, ganti dengan placeholder online -->
+        <!-- <img src="https://via.placeholder.com/160?text=Aditya" alt="Foto Aditya Laumahfudz Isabel" class="profile-img"> -->
+        <h1>ADITYA LAUMAHFUDZ ISABEL</h1>
+        <p class="tagline">Siswa Aktif dan Berprestasi</p>
+        <p class="school">SMAN 2 Kota Probolinggo</p>
+        
+        <div class="social-links">
+            <a href="https://wa.me/62881027381616" class="social-icon wa" target="_blank"><i class="fab fa-whatsapp"></i></a>
+            <a href="#" class="social-icon fb" target="_blank"><i class="fab fa-facebook-f"></i></a>
+            <a href="https://www.instagram.com/adityalaumahfudz?igsh=ZWhnbnRseTdsZHEw" class="social-icon ig" target="_blank"><i class="fab fa-instagram"></i></a>
+            <a href="https://www.linkedin.com/in/aditya-laumahfudz-isabel-7442522a8" class="social-icon li" target="_blank"><i class="fab fa-linkedin-in"></i></a>
+        </div>
+    </header>
+    
+    <div class="main-content">
+        <div class="left-column">
+            <div class="section">
+                <h2 class="section-title">Profil</h2>
+                <p>Siswa kelas 11 dengan minat di bidang komputer dan sastra yang memiliki semangat belajar tinggi dan kemampuan berorganisasi yang baik. Berpengalaman dalam berbagai kegiatan ekstrakurikuler dan memiliki prestasi akademik serta sastra yang membanggakan.</p>
+            </div>
+            
+            <div class="section">
+                <h2 class="section-title">Minat dan Hobi</h2>
+                <ul>
+                    <li>Programming</li>
+                    <li>Bug Hunting</li>
+                    <li>Membaca & Menulis</li>
+                    <li>Linux & Terminal</li>
+                    <li>Bermain Catur</li>
+                    <li>Mendengarkan Musik</li>
+                </ul>
+            </div>
+            
+            <div class="section">
+                <h2 class="section-title">Informasi Kontak</h2>
+                <div class="info-item">
+                    <div class="info-title"><i class="fas fa-phone"></i> Telepon</div>
+                    <div class="info-detail">+62 881-0273-81616</div>
+                </div>
+                <div class="info-item">
+                    <div class="info-title"><i class="fas fa-envelope"></i> Email</div>
+                    <div class="info-detail">laumahfudzaditya@gmail.com</div>
+                </div>
+                <div class="info-item">
+                    <div class="info-title"><i class="fas fa-map-marker-alt"></i> Alamat</div>
+                    <div class="info-detail">Kota Probolinggo, Jawa Timur</div>
+                </div>
+            </div>
+            
+            <div class="section">
+                <h2 class="section-title">Keterampilan</h2>
+                <div class="skills">
+                    <span class="skill-badge">Microsoft Office</span>
+                    <span class="skill-badge">Public Speaking</span>
+                    <span class="skill-badge">Kepemimpinan</span>
+                    <span class="skill-badge">Menulis</span>
+                    <span class="skill-badge">Programming</span>
+                    <span class="skill-badge">Cyber Security</span>
+                </div>
+            </div>
+
+            <div class="section">
+                <h2 class="section-title">Keahlian Teknis</h2>
+                <div class="skills">
+                    <span class="skill-badge">HTML/CSS</span>
+                    <span class="skill-badge">Python</span>
+                    <span class="skill-badge">Cyber Security</span>
+                    <span class="skill-badge">Bug Hunter</span>
+                    <span class="skill-badge">Linux</span>
+                </div>
+            </div>
+            
+            <div class="section">
+                <h2 class="section-title">Bahasa</h2>
+                <div class="language-item">
+                    <span class="language-name">Bahasa Indonesia</span>
+                    <div class="progress-bar">
+                        <div class="progress" data-width="100%"></div>
+                    </div>
+                    <div class="progress-text">100% (Lancar)</div>
+                </div>
+                <div class="language-item">
+                    <span class="language-name">Bahasa Inggris</span>
+                    <div class="progress-bar">
+                        <div class="progress" data-width="60%"></div>
+                    </div>
+                    <div class="progress-text">60% (Menengah)</div>
+                </div>
+                <div class="language-item">
+                    <span class="language-name">Bahasa Jawa</span>
+                    <div class="progress-bar">
+                        <div class="progress" data-width="30%"></div>
+                    </div>
+                    <div class="progress-text">30% (Dasar)</div>
+                </div>
+                <div class="language-item">
+                    <span class="language-name">Bahasa Mandarin</span>
+                    <div class="progress-bar">
+                        <div class="progress" data-width="40%"></div>
+                    </div>
+                    <div class="progress-text">40% (Menengah)</div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="right-column">
+            <div class="section">
+                <h2 class="section-title">Pendidikan</h2>
+                <div class="education-item">
+                    <div class="edu-title">SMAN 2 Kota Probolinggo</div>
+                    <div class="edu-place">KELAS 11</div>
+                    <div class="edu-date">2025 - Sekarang</div>
+                    <p>Siswa aktif dengan nilai rata-rata rapor yang baik. Mengikuti berbagai kegiatan ekstrakurikuler dan organisasi siswa.</p>
+                </div>
+                <div class="education-item">
+                    <div class="edu-title">SMPN 2 Kota Probolinggo</div>
+                    <div class="edu-place">Pendidikan Menengah Pertama</div>
+                    <div class="edu-date">2021 - 2024</div>
+                    <p>Lulus dengan predikat sangat memuaskan. Aktif dalam kegiatan ekstrakurikuler.</p>
+                </div>
+                <div class="education-item">
+                    <div class="edu-title">SDN Sukabumi 7</div>
+                    <div class="edu-place">Pendidikan Dasar</div>
+                    <div class="edu-date">2015 - 2021</div>
+                    <p>Lulus dengan predikat baik. Sering mengikuti lomba dan kegiatan tingkat SD.</p>
+                </div>
+            </div>
+            
+            <div class="section">
+                <h2 class="section-title">Pengalaman Organisasi</h2>
+                <div class="experience-item">
+                    <div class="exp-title">Wakil Ketua Jurnalistik</div>
+                    <div class="exp-place">SMAN 2 Kota Probolinggo</div>
+                    <div class="exp-date">2024 - 2025</div>
+                    <p>Membantu mengatur liputan berbagai kegiatan sekolah seperti peringatan hari besar nasional, perlombaan antar kelas, dan bakti sosial.</p>
+                </div>
+                <div class="experience-item">
+                    <div class="exp-title">Anggota Kelompok Ilmiah Remaja (KIR)</div>
+                    <div class="exp-place">SMAN 2 Kota Probolinggo</div>
+                    <div class="exp-date">2024 - Sekarang</div>
+                    <p>Berpartisipasi aktif dalam kegiatan penelitian dan eksperimen ilmiah.</p>
+                </div>
+                <div class="experience-item">
+                    <div class="exp-title">Anggota Ekstrakurikuler Programming</div>
+                    <div class="exp-place">SMAN 2 Kota Probolinggo</div>
+                    <div class="exp-date">2024 - Sekarang</div>
+                    <p>Berpartisipasi aktif dalam diskusi dan bimbingan programming mingguan, mengikuti berbagai kompetisi di bidang IT, dan sedang mengembangkan website pribadi.</p>
+                </div>
+            </div>
+
+            <div class="section">
+                <h2 class="section-title">Pengalaman Lomba & Prestasi</h2>
+                <div class="competition-item">
+                    <div class="comp-title">OSN Matematika SD</div>
+                    <div class="comp-place">Tingkat Sekolah</div>
+                    <div class="comp-date">2020</div>
+                    <p>Berpartisipasi dalam olimpiade matematika tingkat sekolah dasar.</p>
+                </div>
+                <div class="competition-item">
+                    <div class="comp-title">OPSI IPT SMA 2025</div>
+                    <div class="comp-place">Tingkat Nasional</div>
+                    <div class="comp-date">2025</div>
+                    <p>Berpartisipasi dalam lomba penelitian ilmiah untuk siswa SMA.</p>
+                </div>
+                <div class="competition-item">
+                    <div class="comp-title">WRCSO</div>
+                    <div class="comp-place">Internasional — Gold Medal</div>
+                    <div class="comp-date">2025</div>
+                    <p>Kompetisi robotika dan ilmu komputer internasional.</p>
+                </div>
+                <div class="competition-item">
+                    <div class="comp-title">WSDGC</div>
+                    <div class="comp-place">Internasional — Gold Medal</div>
+                    <div class="comp-date">2025</div>
+                    <p>Tantangan global untuk tujuan pembangunan berkelanjutan.</p>
+                </div>
+                <div class="competition-item">
+                    <div class="comp-title">CTF Nasional</div>
+                    <div class="comp-place">Tingkat Nasional</div>
+                    <div class="comp-date">2024</div>
+                    <p>Kompetisi keamanan siber dalam format Capture The Flag.</p>
+                </div>
+                <div class="competition-item">
+                    <div class="comp-title">Hackathon Sekolah</div>
+                    <div class="comp-place">Tingkat Sekolah</div>
+                    <div class="comp-date">2025</div>
+                    <p>Kompetisi pengembangan perangkat lunak intensif 24 jam.</p>
+                </div>
+                <div class="competition-item">
+                    <div class="comp-title">JYCC 2025</div>
+                    <div class="comp-place">Tingkat Jawa Timur</div>
+                    <div class="comp-date">2025</div>
+                    <p>Kompetisi kewirausahaan dan teknologi untuk pemuda Jawa Timur.</p>
+                </div>
+                <div class="competition-item">
+                    <div class="comp-title">Juara 3 Puisi Nasional</div>
+                    <div class="comp-place">Tingkat Nasional</div>
+                    <div class="comp-date">2025</div>
+                    <p>Peringkat 3 dalam lomba cipta puisi nasional.</p>
+                </div>
+                <div class="competition-item">
+                    <div class="comp-title">Juara 1 Cerpen Nasional</div>
+                    <div class="comp-place">Tingkat Nasional</div>
+                    <div class="comp-date">2024</div>
+                    <p>Peringkat 1 dalam lomba cipta cerpen nasional.</p>
+                </div>
+            </div>
+            
+            <div class="section">
+                <h2 class="section-title">Proyek</h2>
+                <div class="projects">
+                    <div class="project-item">
+                        <div class="project-title">ML untuk Tata Kelola Kota & Kesehatan</div>
+                        <p>Model prediktif berbasis machine learning untuk analisis urban dan kesehatan.</p>
+                    </div>
+                    <div class="project-item">
+                        <div class="project-title">Website Portofolio Pribadi</div>
+                        <p>Pengembangan website responsif untuk menampilkan portofolio digital.</p>
+                    </div>
+                    <div class="project-item">
+                        <div class="project-title">Antologi Puisi: Di Saat Langit Biru</div>
+                        <p>Kontributor dan editor buku antologi puisi karya penulis muda.</p>
+                    </div>
+                    <div class="project-item">
+                        <div class="project-title">Novel: Langit Biru Tanpa Namamu</div>
+                        <p>Penulis novel fiksi bergenre romansa, drama, dan religi.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <footer>
+        <p>&copy; 2025 Portofolio Aditya Laumahfudz Isabel | SMAN 2 Probolinggo</p>
+    </footer>
+</div>
+
+<script>
+    // Inisialisasi canvas
+    const canvas = document.getElementById('spaceCanvas');
+    const ctx = canvas.getContext('2d');
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+
+    // Array untuk menyimpan objek bintang
+    const stars = [];
+    const numStars = 400; // Lebih banyak bintang
+
+    // Fungsi untuk membuat bintang
+    function createStar() {
+        return {
+            x: Math.random() * canvas.width,
+            y: Math.random() * canvas.height,
+            radius: Math.random() * 1.5,
+            speedX: (Math.random() - 0.5) * 0.01, // Gerakan bintang sangat pelan
+            speedY: (Math.random() - 0.5) * 0.01,
+            alpha: Math.random() * 0.8 + 0.2,
+            twinkleSpeed: Math.random() * 0.02 + 0.01,
+            distance: Math.random() // Digunakan untuk efek paralaks
+        };
+    }
+
+    // Buat bintang-bintang
+    for (let i = 0; i < numStars; i++) {
+        stars.push(createStar());
+    }
+
+    // Array untuk menyimpan asteroid
+    const asteroids = [];
+    const numAsteroids = 100; // Lebih banyak asteroid
+
+    // Fungsi untuk membuat asteroid
+    function createAsteroid() {
+        const size = Math.random() * 3 + 0.5; // Ukuran lebih kecil
+        // Letakkan asteroid dalam sabuk antara dua orbit planet
+        const innerRadius = canvas.width * 0.2;
+        const outerRadius = canvas.width * 0.35;
+        const distance = innerRadius + Math.random() * (outerRadius - innerRadius);
+        const angle = Math.random() * Math.PI * 2;
+        const orbitSpeed = (Math.random() * 0.0008 + 0.0003) * (Math.random() > 0.5 ? 1 : -1);
+        return {
+            distance: distance,
+            angle: angle,
+            orbitSpeed: orbitSpeed,
+            size: size,
+            baseX: canvas.width / 2,
+            baseY: canvas.height / 2,
+            color: `rgba(${Math.floor(Math.random() * 100 + 50)}, ${Math.floor(Math.random() * 100 + 50)}, ${Math.floor(Math.random() * 150 + 50)}, 0.7)`,
+            eccentricity: Math.random() * 0.3 // Untuk orbit elips
+        };
+    }
+
+    // Buat asteroid
+    for (let i = 0; i < numAsteroids; i++) {
+        asteroids.push(createAsteroid());
+    }
+
+    // Array untuk menyimpan komet
+    const comets = [];
+    const numComets = 3; // Hanya beberapa komet karena lintasannya panjang
+
+    // Fungsi untuk membuat komet
+    function createComet() {
+        const orbitAngle = Math.random() * Math.PI * 2;
+        const orbitInclination = (Math.random() - 0.5) * Math.PI; // Inklinasi acak
+        const semiMajorAxis = canvas.width * (0.4 + Math.random() * 0.6); // Orbit sangat panjang
+        const eccentricity = 0.8 + Math.random() * 0.15; // Orbit sangat elips
+        const orbitSpeed = Math.random() * 0.00005 + 0.00001; // Sangat lambat
+        return {
+            baseX: canvas.width / 2,
+            baseY: canvas.height / 2,
+            semiMajorAxis: semiMajorAxis,
+            eccentricity: eccentricity,
+            angle: orbitAngle,
+            orbitSpeed: orbitSpeed,
+            inclination: orbitInclination,
+            size: 1,
+            color: `rgba(170, 200, 255, 0.8)`,
+            tail: []
+        };
+    }
+
+    // Buat komet
+    for (let i = 0; i < numComets; i++) {
+        comets.push(createComet());
+    }
+
+    // Array untuk menyimpan planet
+    const planets = [];
+
+    // Fungsi untuk membuat planet
+    function createPlanet(name, size, distance, orbitSpeed, color, hasRing = false, moons = []) {
+        return {
+            name: name,
+            size: size,
+            distance: distance,
+            angle: Math.random() * Math.PI * 2,
+            orbitSpeed: orbitSpeed,
+            baseX: canvas.width / 2,
+            baseY: canvas.height / 2,
+            color: color,
+            glowColor: `hsla(${parseInt(color.split(',')[0].split('(')[1])}, 100%, 70%, 0.3)`,
+            hasRing: hasRing,
+            moons: moons // Array untuk menyimpan bulan
+        };
+    }
+
+    // Fungsi untuk membuat bulan/satelit
+    function createMoon(planetSize, planetDistance, orbitSpeed) {
+        const size = planetSize * 0.15 + Math.random() * 1.5;
+        const distance = planetSize * 1.8 + Math.random() * 5;
+        const moonOrbitSpeed = orbitSpeed * 5;
+        return {
+            size: size,
+            distance: distance,
+            angle: Math.random() * Math.PI * 2,
+            orbitSpeed: moonOrbitSpeed,
+            color: `hsla(200, 20%, 80%, 0.8)`
+        };
+    }
+
+    // Fungsi untuk membuat satelit buatan futuristik
+    function createSatellite(planetDistance, planetOrbitSpeed) {
+        const size = 1.2;
+        const distance = planetDistance + 15 + Math.random() * 10;
+        const orbitSpeed = (planetOrbitSpeed * 10) + (Math.random() * 0.005 - 0.0025); // Lebih cepat dari bulan
+        return {
+            size: size,
+            distance: distance,
+            angle: Math.random() * Math.PI * 2,
+            orbitSpeed: orbitSpeed,
+            color: `hsla(200, 100%, 70%, 1)`, // Warna biru terang futuristik
+            isSatellite: true
+        };
+    }
+
+    // Definisikan planet-planet tata surya kita (dengan skala dan kecepatan yang dipercepat untuk visual)
+    // Merkurius
+    planets.push(createPlanet("Mercury", 4, canvas.width * 0.06, 0.008, "hsla(20, 30%, 40%, 0.8)"));
+    // Venus
+    planets.push(createPlanet("Venus", 6, canvas.width * 0.09, 0.006, "hsla(40, 80%, 50%, 0.8)"));
+    // Bumi
+    const earthMoons = [
+        createMoon(8, canvas.width * 0.13, 0.004), // Bulan
+        createSatellite(canvas.width * 0.13, 0.004) // Satelit
+    ];
+    planets.push(createPlanet("Earth", 8, canvas.width * 0.13, 0.004, "hsla(200, 60%, 50%, 0.8)", false, earthMoons));
+    // Mars
+    const marsMoons = [
+        createMoon(5, canvas.width * 0.17, 0.003), // Phobos/Deimos
+        createSatellite(canvas.width * 0.17, 0.003) // Satelit
+    ];
+    planets.push(createPlanet("Mars", 5, canvas.width * 0.17, 0.003, "hsla(0, 70%, 50%, 0.8)", false, marsMoons));
+    // Jupiter
+    const jupiterMoons = [
+        createMoon(15, canvas.width * 0.25, 0.0015),
+        createMoon(12, canvas.width * 0.25, 0.0017),
+        createMoon(10, canvas.width * 0.25, 0.0014),
+        createSatellite(canvas.width * 0.25, 0.0015) // Satelit
+    ];
+    planets.push(createPlanet("Jupiter", 15, canvas.width * 0.25, 0.0015, "hsla(40, 50%, 60%, 0.8)", true, jupiterMoons));
+    // Saturnus
+    const saturnMoons = [
+        createMoon(13, canvas.width * 0.32, 0.001),
+        createSatellite(canvas.width * 0.32, 0.001) // Satelit
+    ];
+    planets.push(createPlanet("Saturn", 13, canvas.width * 0.32, 0.001, "hsla(50, 60%, 60%, 0.8)", true, saturnMoons));
+    // Uranus
+    planets.push(createPlanet("Uranus", 10, canvas.width * 0.40, 0.0005, "hsla(180, 50%, 70%, 0.8)"));
+    // Neptunus
+    planets.push(createPlanet("Neptune", 10, canvas.width * 0.48, 0.0003, "hsla(200, 70%, 60%, 0.8)"));
+
+    // Gambar latar belakang kosmik
+    function drawSpace() {
+        // Bersihkan canvas
+        ctx.fillStyle = '#0c0e16';
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+        // Gambar bintang (dengan efek paralaks - bintang jauh bergerak lebih lambat)
+        stars.forEach(star => {
+            // Gerakkan bintang berdasarkan jaraknya (paralaks)
+            star.x += star.speedX * star.distance * 0.5;
+            star.y += star.speedY * star.distance * 0.5;
+
+            if (star.x < 0) star.x = canvas.width;
+            if (star.x > canvas.width) star.x = 0;
+            if (star.y < 0) star.y = canvas.height;
+            if (star.y > canvas.height) star.y = 0;
+
+            ctx.beginPath();
+            ctx.arc(star.x, star.y, star.radius, 0, Math.PI * 2);
+            ctx.fillStyle = `rgba(255, 255, 255, ${star.alpha})`;
+            ctx.fill();
+
+            // Efek kedip bintang
+            star.alpha += star.twinkleSpeed;
+            if (star.alpha > 1 || star.alpha < 0.2) {
+                star.twinkleSpeed *= -1;
+            }
+        });
+
+        // Gambar matahari di tengah
+        const centerX = canvas.width / 2;
+        const centerY = canvas.height / 2;
+        const sunRadius = 30;
+
+        const sunGradient = ctx.createRadialGradient(
+            centerX, centerY, 0,
+            centerX, centerY, sunRadius * 2.5
+        );
+        sunGradient.addColorStop(0, 'rgba(255, 255, 200, 1)');
+        sunGradient.addColorStop(0.5, 'rgba(255, 150, 50, 0.9)');
+        sunGradient.addColorStop(1, 'rgba(255, 50, 0, 0.2)');
+
+        ctx.beginPath();
+        ctx.arc(centerX, centerY, sunRadius * 2.5, 0, Math.PI * 2);
+        ctx.fillStyle = sunGradient;
+        ctx.fill();
+
+        ctx.beginPath();
+        ctx.arc(centerX, centerY, sunRadius, 0, Math.PI * 2);
+        ctx.fillStyle = 'rgba(255, 200, 50, 1)';
+        ctx.fill();
+
+        // Gambar asteroid (sabuk asteroid)
+        asteroids.forEach(asteroid => {
+            // Hitung posisi dengan orbit elips
+            const r = (asteroid.distance * (1 - asteroid.eccentricity * asteroid.eccentricity)) / (1 + asteroid.eccentricity * Math.cos(asteroid.angle));
+            const x = asteroid.baseX + r * Math.cos(asteroid.angle);
+            const y = asteroid.baseY + r * Math.sin(asteroid.angle);
+
+            // Gambar asteroid
+            ctx.beginPath();
+            ctx.arc(x, y, asteroid.size, 0, Math.PI * 2);
+            ctx.fillStyle = asteroid.color;
+            ctx.fill();
+
+            // Update posisi orbit asteroid
+            asteroid.angle += asteroid.orbitSpeed;
+        });
+
+        // Gambar komet
+        comets.forEach(comet => {
+            // Hitung posisi komet dengan orbit elips panjang
+            const r = (comet.semiMajorAxis * (1 - comet.eccentricity * comet.eccentricity)) / (1 + comet.eccentricity * Math.cos(comet.angle));
+            // Aplikasikan inklinasi untuk efek 3D
+            let x = comet.baseX + r * Math.cos(comet.angle);
+            let y = comet.baseY + r * Math.sin(comet.angle) * Math.sin(comet.inclination);
+
+            // Simulasi ekor komet
+            comet.tail.unshift({x: x, y: y});
+            if (comet.tail.length > 30) {
+                comet.tail.pop();
+            }
+
+            // Gambar ekor
+            if (comet.tail.length > 1) {
+                ctx.beginPath();
+                ctx.moveTo(comet.tail[0].x, comet.tail[0].y);
+                for (let i = 1; i < comet.tail.length; i++) {
+                    const alpha = (i / comet.tail.length) * 0.5;
+                    ctx.lineTo(comet.tail[i].x, comet.tail[i].y);
+                    ctx.strokeStyle = `rgba(170, 200, 255, ${alpha})`;
+                    ctx.lineWidth = 1.5 * (i / comet.tail.length);
+                    ctx.stroke();
+                }
+            }
+
+            // Gambar kepala komet
+            ctx.beginPath();
+            ctx.arc(x, y, comet.size, 0, Math.PI * 2);
+            ctx.fillStyle = comet.color;
+            ctx.fill();
+
+            // Update posisi orbit komet
+            comet.angle += comet.orbitSpeed;
+        });
+
+        // Gambar planet dan bulan/satelitnya (dari belakang ke depan untuk efek lapisan)
+        // Urutan: Merk, Ven, Bum, Mar, Jup, Sat, Ura, Nep
+        const sortedPlanets = [...planets].sort((a, b) => a.distance - b.distance);
+        sortedPlanets.forEach(planet => {
+            // Hitung posisi planet
+            const planetX = planet.baseX + Math.cos(planet.angle) * planet.distance;
+            const planetY = planet.baseY + Math.sin(planet.angle) * planet.distance;
+
+            // Gambar glow planet
+            const gradient = ctx.createRadialGradient(
+                planetX, planetY, 0,
+                planetX, planetY, planet.size * 2.5
+            );
+            gradient.addColorStop(0, planet.glowColor);
+            gradient.addColorStop(1, 'transparent');
+            ctx.fillStyle = gradient;
+            ctx.beginPath();
+            ctx.arc(planetX, planetY, planet.size * 2.5, 0, Math.PI * 2);
+            ctx.fill();
+
+            // Gambar planet
+            ctx.beginPath();
+            ctx.arc(planetX, planetY, planet.size, 0, Math.PI * 2);
+            const planetGradient = ctx.createRadialGradient(
+                planetX - planet.size * 0.3, planetY - planet.size * 0.3, 0,
+                planetX, planetY, planet.size
+            );
+            planetGradient.addColorStop(0, planet.color);
+            planetGradient.addColorStop(1, `hsla(${parseInt(planet.color.split(',')[0].split('(')[1])}, 70%, 25%, 0.8)`);
+            ctx.fillStyle = planetGradient;
+            ctx.fill();
+
+            // Gambar cincin jika ada
+            if (planet.hasRing) {
+                ctx.save();
+                ctx.translate(planetX, planetY);
+                ctx.rotate(planet.angle); // Cincin menghadap ke samping
+                ctx.beginPath();
+                ctx.ellipse(0, 0, planet.size * 2.0, planet.size * 0.6, 0, 0, Math.PI * 2);
+                ctx.strokeStyle = `hsla(${parseInt(planet.color.split(',')[0].split('(')[1]) - 20}, 50%, 50%, 0.6)`;
+                ctx.lineWidth = 2;
+                ctx.stroke();
+                ctx.restore();
+            }
+
+            // Update posisi orbit planet
+            planet.angle += planet.orbitSpeed;
+
+            // Gambar bulan/satelit
+            planet.moons.forEach(moon => {
+                const moonX = planetX + Math.cos(moon.angle) * moon.distance;
+                const moonY = planetY + Math.sin(moon.angle) * moon.distance;
+
+                // Ukuran bulan/satelit bisa sedikit berubah untuk efek 3D
+                const apparentSize = moon.size; // Dalam simulasi ini, ukuran tetap untuk kesederhanaan
+
+                ctx.beginPath();
+                ctx.arc(moonX, moonY, apparentSize, 0, Math.PI * 2);
+                ctx.fillStyle = moon.color;
+                ctx.fill();
+
+                // Update posisi orbit bulan/satelit
+                moon.angle += moon.orbitSpeed;
+            });
+        });
+
+        requestAnimationFrame(drawSpace);
+    }
+
+    // Event listener untuk resize window
+    window.addEventListener('resize', () => {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+        // Perbarui baseX, baseY planet dan asteroid
+        planets.forEach(p => {
+            p.baseX = canvas.width / 2;
+            p.baseY = canvas.height / 2;
+        });
+        asteroids.forEach(a => {
+            a.baseX = canvas.width / 2;
+            a.baseY = canvas.height / 2;
+        });
+        comets.forEach(c => {
+            c.baseX = canvas.width / 2;
+            c.baseY = canvas.height / 2;
+        });
+    });
+
+    // Mulai animasi
+    drawSpace();
+
+    // Scroll animations
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('visible');
+            }
+        });
+    }, { threshold: 0.1 });
+
+    document.querySelectorAll('.section').forEach(section => {
+        observer.observe(section);
+    });
+
+    // Progress bar animation
+    const progressBars = document.querySelectorAll('.progress');
+    const observerBar = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                const width = entry.target.getAttribute('data-width');
+                entry.target.style.width = width;
+                observerBar.unobserve(entry.target);
+            }
+        });
+    }, { threshold: 0.8 });
+
+    progressBars.forEach(bar => {
+        observerBar.observe(bar);
+    });
+</script>
+</body>
+</html>
